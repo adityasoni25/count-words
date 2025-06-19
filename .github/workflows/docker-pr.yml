@@ -23,5 +23,15 @@ jobs:
       - name: Build Docker image
         run: docker build -t countwords-app .
 
-      - name: Run Docker container (optional test)
-        run: docker run --rm countwords-app java -jar app.jar
+      - name: Run Docker container and test health
+        run: |
+          docker run -d --name test-container -p 8080:8080 countwords-app
+          for i in {1..10}; do
+            if curl -f http://localhost:8080/actuator/health; then
+              echo "App is healthy"
+              break
+            fi
+            sleep 3
+          done
+          docker logs test-container
+          docker stop test-container

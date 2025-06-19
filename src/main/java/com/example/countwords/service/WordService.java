@@ -4,7 +4,6 @@ import com.example.countwords.model.CountWordsResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class WordService {
@@ -16,7 +15,7 @@ public class WordService {
 
         List<String> longerThanFive = words.stream()
                 .filter(word -> word.length() > 5)
-                .collect(Collectors.toList());
+                .toList();
 
         return new CountWordsResponse(count, longerThanFive);
     }

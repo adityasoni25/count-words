@@ -1,37 +1,53 @@
 package com.example.countwords.service;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.example.countwords.exceptions.WordFileReadException;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.Resource;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class FileWordReaderTest {
+class FileWordReaderTest {
 
-    private FileWordReader fileWordReader;
+    @Test
+    void readWords_returnsWordListFromResourceFile() throws IOException {
+        // Arrange
+        String mockContent = "Monkey mango\nmelon Maple";
+        InputStream mockInputStream = new ByteArrayInputStream(mockContent.getBytes());
 
-    @BeforeEach
-    void setUp() {
-        fileWordReader = new FileWordReader();
+        Resource mockResource = mock(Resource.class);
+        when(mockResource.getInputStream()).thenReturn(mockInputStream);
+
+        FileWordReader reader = new FileWordReader();
+        reader.wordsFile = mockResource; // manually inject mock
+
+        // Act
+        List<String> result = reader.readWords();
+
+        // Assert
+        assertEquals(List.of("Monkey", "mango", "melon", "Maple"), result);
     }
 
     @Test
-    void shouldReadWordsFromFileSuccessfully() throws Exception {
-        List<String> words = fileWordReader.readWords();
+    void readWords_throwsCustomExceptionOnIOException() throws IOException {
+        // Arrange
+        Resource mockResource = mock(Resource.class);
+        when(mockResource.getInputStream()).thenThrow(new IOException("Simulated failure"));
 
-        assertNotNull(words, "Words list should not be null");
-        assertFalse(words.isEmpty(), "Words list should not be empty");
-        assertTrue(words.contains("Monkey"), "Should contain 'Monkey'");
-        assertTrue(words.contains("banana"), "Should contain 'banana'");
+        FileWordReader reader = new FileWordReader();
+        reader.wordsFile = mockResource;
+
+        // Act & Assert
+        WordFileReadException ex = assertThrows(
+                WordFileReadException.class,
+                reader::readWords
+        );
+
+        assertTrue(ex.getMessage().contains("Failed to read words"));
     }
-
-    @Test
-    void shouldReadCorrectNumberOfWords() throws Exception {
-        List<String> words = fileWordReader.readWords();
-
-        // Adjust expected count based on test file
-        assertEquals(9, words.size(), "Should read 8 words from the file");
-    }
-
 }

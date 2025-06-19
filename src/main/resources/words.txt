@@ -23,8 +23,3 @@ octopus
 giraffe
 house
 window
-microscope
-monitor
-music
-mustang
-magnet

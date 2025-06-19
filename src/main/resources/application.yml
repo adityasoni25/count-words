@@ -1,1 +1,36 @@
-spring.application.name=countwords
+spring:
+  application:
+    name: countwords
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:prod}  # Allows profile override via env
+  main:
+    banner-mode: "off"  # Hide startup banner
+  output:
+    ansi:
+      enabled: always  # Better log readability
+  config:
+    import: optional:file:.env[.properties]  # Enable loading external env vars
+
+server:
+  port: ${PORT:8080}  # Dynamic port binding via env var
+
+words:
+  file-path: classpath:words.txt
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when_authorized
+  health:
+    probes:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.hibernate: WARN

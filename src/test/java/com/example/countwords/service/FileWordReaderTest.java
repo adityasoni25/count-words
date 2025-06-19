@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileWordReaderTest {
+class FileWordReaderTest {
 
     private FileWordReader fileWordReader;
 

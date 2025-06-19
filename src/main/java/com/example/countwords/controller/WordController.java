@@ -31,8 +31,8 @@ public class WordController {
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
-    @GetMapping("/stats")
-    public CountWordsResponse processWords() throws Exception {
+    @GetMapping("/start")
+    public CountWordsResponse processWords(){
         return wordService.processWords(fileWordReader.readWords());
     }
 

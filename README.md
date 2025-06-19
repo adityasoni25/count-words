@@ -9,7 +9,7 @@ A Spring Boot application that processes a list of words to:
 
 ## 🏗️ Tech Stack
 
-- **Java 17**
+- **Java 21**
 - **Spring Boot**
 - **Maven**
 - **JUnit 5** (for unit testing)
@@ -21,8 +21,8 @@ A Spring Boot application that processes a list of words to:
 ## 🚀 How to Run the Application
 
 ### 🔧 Prerequisites
-- Java 17+
-- Maven 3.6+
+- Java 21+
+- Maven 3.9.9+
 - Docker (optional for containerized run)
 
 ### 📦 Build and Run Locally
@@ -58,7 +58,7 @@ To allow dynamic updates (without restart), modify the app to read from an exter
 
 ## 🔗 REST API Usage
 
-### 📥 Endpoint: `/api/process`
+### 📥 Endpoint: `/api/words/start`
 - **Method:** GET
 - **Description:** Triggers processing of the `words.txt` file and returns results.
 
